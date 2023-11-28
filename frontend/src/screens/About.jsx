@@ -14,9 +14,7 @@ function About() {
                 We are one of best in the idustry to provide updated learning metarials. We are constantly trying our best 
                 to master the ample technologies to make you market ready as well as to keep us future-ready.
               </p>
-              <p className="text-muted">
-                Vector illustration credit goes to <a rel="noreferrer" href="http://freepik.com/" target="_blank">FreePik</a> website.
-              </p>
+              
             </div>
             <div className="col-lg-6">
               <figure className="td_figure">

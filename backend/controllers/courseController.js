@@ -3,6 +3,12 @@ import Course from "../models/courseModel.js";
 const createCourse = async (req, res) => {
   const { course_name, course_outline, total_units } = req.body;
 
+  const existingCourse = await Course.findOne({ course_name });
+
+  if (existingCourse) {
+    res.status(400).json({ error: "Course with the same name already exists" });
+    return;
+  }
   const course = new Course({
     course_name: course_name,
     course_outline: course_outline,
@@ -26,15 +32,18 @@ const getCourses = async (req, res) => {
 };
 
 const getSpecificCourses = async (req, res) => {
-  const courses = await Course.find({});
+  try {
+    const courses = await Course.find({});
 
-  const courseData = courses.filter((course) => {
-    if (course.created_by.equals(req.user._id)) {
-      return course;
-    }
-  });
+    const courseData = courses.filter((course) => {
+      return course.created_by.equals(req.user._id);
+    });
 
-  res.status(200).send(courseData);
+    res.status(200).send(courseData);
+  } catch (error) {
+    console.error("Error fetching specific courses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 const updateCourse = async (req, res) => {

@@ -2,35 +2,38 @@ import Teacher from "../models/teacherModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 
-const authUser = async (req, res) => {
-  const { tchr_email, password } = req.body;
-  const user = await Teacher.findOne({ tchr_email });
+const authTeacher = async (req, res) => {
+  try {
+    const { tchr_email, password } = req.body;
+    const user = await Teacher.findOne({ tchr_email });
 
-  if (user) {
-    const { hashPassword } = user;
-    const verified = bcrypt.compareSync(password, hashPassword);
-    if (verified) {
-      res.status(201).json({
-        _id: user._id,
-        tchr_name: user.tchr_name,
-        tchr_email: user.tchr_email,
-        user_type: user.user_type,
-        tchr_mobile: user.tchr_mobile,
-        tchr_address: user.tchr_address,
-        tchr_pic: user.tchr_pic,
-        token: generateToken(user._id),
-      });
+    if (user) {
+      const { hashPassword } = user;
+      const verified = bcrypt.compareSync(password, hashPassword);
+      if (verified) {
+        res.status(201).json({
+          _id: user._id,
+          tchr_name: user.tchr_name,
+          tchr_email: user.tchr_email,
+          user_type: user.user_type,
+          tchr_mobile: user.tchr_mobile,
+          tchr_address: user.tchr_address,
+          tchr_pic: user.tchr_pic,
+          token: generateToken(user._id),
+        });
+      } else {
+        res.status(400).json({ error: "Incorrect password" });
+      }
     } else {
-      res.status(400);
-      throw new Error("Incorrect password");
+      res.status(404).json({ error: "User not found" });
     }
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+  } catch (error) {
+    console.error("Error in authentication:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-const registerUser = async (req, res) => {
+const registerTeacher = async (req, res) => {
   const {
     tchr_name,
     tchr_email,
@@ -78,4 +81,4 @@ const registerUser = async (req, res) => {
   }
 };
 
-export { authUser, registerUser };
+export { authTeacher, registerTeacher };

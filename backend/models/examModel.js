@@ -14,6 +14,7 @@ const examSchema = mongoose.Schema(
     total_marks: {
       type: Number,
       required: true,
+      default: 20,
     },
     total_time: {
       type: Number,

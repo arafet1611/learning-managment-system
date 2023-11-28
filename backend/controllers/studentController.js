@@ -1,33 +1,36 @@
 import Student from "../models/studentModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
-const authUser = async (req, res) => {
-  const { stud_email, password } = req.body;
-  const user = await Student.findOne({ stud_email });
+const authStudent = async (req, res) => {
+  try {
+    const { stud_email, password } = req.body;
+    const user = await Student.findOne({ stud_email });
 
-  if (user) {
-    const { hashPassword } = user;
-    const verified = bcrypt.compareSync(password, hashPassword);
-    if (verified) {
-      res.status(201).json({
-        _id: user._id,
-        stud_name: user.stud_name,
-        stud_email: user.stud_email,
-        stud_mobile: user.stud_mobile,
-        stud_address: user.stud_address,
-        stud_pic: user.stud_pic,
-        token: generateToken(user._id),
-      });
+    if (user) {
+      const { hashPassword } = user;
+      const verified = bcrypt.compareSync(password, hashPassword);
+      if (verified) {
+        res.status(201).json({
+          _id: user._id,
+          stud_name: user.stud_name,
+          stud_email: user.stud_email,
+          stud_mobile: user.stud_mobile,
+          stud_address: user.stud_address,
+          stud_pic: user.stud_pic,
+          token: generateToken(user._id),
+        });
+      } else {
+        res.status(400).json({ error: "Incorrect password" });
+      }
     } else {
-      res.status(400);
-      throw new Error("Incorrect password");
+      res.status(404).json({ error: "User not found" });
     }
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+  } catch (error) {
+    console.error("Error in authentication:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const registerUser = async (req, res) => {
+const registerStudent = async (req, res) => {
   const {
     stud_name,
     stud_email,
@@ -51,13 +54,12 @@ const registerUser = async (req, res) => {
     stud_name,
     stud_email,
     hashPassword,
-
     stud_mobile,
     stud_address,
-    stud_pic,
   });
 
   if (user) {
+    console.log("teacher account created successfully");
     res.status(201).json({
       _id: user._id,
       stud_name: user.stud_name,
@@ -74,4 +76,4 @@ const registerUser = async (req, res) => {
   }
 };
 
-export { authUser, registerUser };
+export { authStudent, registerStudent };

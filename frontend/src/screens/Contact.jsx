@@ -15,17 +15,7 @@ function About() {
                 If you have any query or suggestions for us, please feel free to
                 reach out. We'll get back to you as soon as possible.
               </p>
-              <p className="text-muted">
-                Vector illustration credit goes to{" "}
-                <a
-                  rel="noreferrer"
-                  href="https://storyset.com/"
-                  target="_blank"
-                >
-                  StorySet
-                </a>
-                .
-              </p>
+              
             </div>
             <div className="contact-img col-lg-5 align-items-end col-md-4">
               <figure className="td_figure">

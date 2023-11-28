@@ -25,7 +25,6 @@ const studentSchema = mongoose.Schema(
     },
     stud_pic: {
       type: String,
-      required: false,
     },
     course: {
       type: Array,

@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./screens/Home";
 import About from "./screens/About";
@@ -16,32 +21,32 @@ import AddQuestion from "./screens/AddQuestion";
 import StudentLogin from "./screens/StudentLogin";
 import StudentRegister from "./screens/StudentRegister";
 import StudentDash from "./screens/StudentDash";
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
     <div className="app">
-      <BrowserRouter>
+      <Router>
         <Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/courses" component={Courses} />
-          <Route exact path="/tests" component={Tests} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/notices" component={Notices} />
-          <Route exact path="/teacher_login" component={TeacherLogin} />
-          <Route exact path="/teacher_register" component={TeacherRegister} />
-          <Route exact path="/teacher_dashboard" component={TeacherDash} />
-          <Route exact path="/teacher_courses" component={TeacherCourses} />
-          <Route exact path="/teacher_tests" component={TeacherTests} />
-          <Route exact path="/add_question" component={AddQuestion} />
-          <Route exact path="/student_login" component={StudentLogin} />
-          <Route exact path="/student_register" component={StudentRegister} />
-          <Route exact path="/student_dashboard" component={StudentDash} />
-          <Redirect to="/" />
-        </Switch>
-      </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/tests" element={<Tests />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/notices" element={<Notices />} />
+          <Route path="/teacher_login" element={<TeacherLogin />} />
+          <Route path="/teacher_register" element={<TeacherRegister />} />
+          <Route path="/teacher_dashboard" element={<TeacherDash />} />
+          <Route path="/teacher_courses" element={<TeacherCourses />} />
+          <Route path="/teacher_tests" element={<TeacherTests />} />
+          <Route path="/add_question" element={<AddQuestion />} />
+          <Route path="/student_login" element={<StudentLogin />} />
+          <Route path="/student_register" element={<StudentRegister />} />
+          <Route path="/student_dashboard" element={<StudentDash />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
     </div>
   );
 }

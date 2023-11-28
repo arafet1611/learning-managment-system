@@ -14,9 +14,7 @@ function Tests() {
               <p className="banner-body pb-2 light-300">
                 Select your course to appear in the test.
               </p>
-              <p className="banner-body pb-2 text-muted">
-                Vector illustration <a className="text-white" rel="noreferrer" href="http://freepik.com/" target="_blank">Freepik</a>.
-              </p>
+              
             </div>
           </div>
         </div>
@@ -36,22 +34,7 @@ function Tests() {
         </div>
       </section>
 
-      <section className="bg-info">
-        <div className="container py-5">
-          <div className="row d-flex justify-content-center text-center">
-            <div className="col-lg-2 col-12 text-light align-items-center">
-              <i className='display-1 bi-award-fill bi-lg'></i>
-            </div>
-            <div className="col-lg-8 col-12 text-light pt-2">
-              <p className="light-300">Don't just study for certification</p>
-              <h3 className="light-300">Get ready to become a professional</h3>
-            </div>
-            <div className="col-lg-2 col-12 text-light align-items-center">
-              <i className='display-1 bi-trophy bi-lg'></i>
-            </div>
-          </div>
-        </div>
-      </section>
+   
 
       <section className="container overflow-hidden py-5">
         <div className="row gx-5 gx-sm-3 gx-lg-5 gy-lg-5 gy-3 pb-3 courses">
@@ -89,6 +72,22 @@ function Tests() {
             courseName = "Fourth Course Name"
           />
 
+        </div>
+      </section>
+      <section className="bg-info">
+        <div className="container py-5">
+          <div className="row d-flex justify-content-center text-center">
+            <div className="col-lg-2 col-12 text-light align-items-center">
+              <i className='display-1 bi-award-fill bi-lg'></i>
+            </div>
+            <div className="col-lg-8 col-12 text-light pt-2">
+              <p className="light-300">Don't just study for certification</p>
+              <h3 className="light-300">Get ready to become a professional</h3>
+            </div>
+            <div className="col-lg-2 col-12 text-light align-items-center">
+              <i className='display-1 bi-trophy bi-lg'></i>
+            </div>
+          </div>
         </div>
       </section>
       <Footer/>

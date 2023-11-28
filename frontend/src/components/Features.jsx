@@ -1,24 +1,58 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { listCourses } from "../actions/courseActions";
 import CourseBox from "../components/CourseBox";
 import { NavLink } from "react-router-dom";
 import bck from "../assets/img/workspace.jpg";
 
 function Features() {
-  const dispatch = useDispatch();
-
-  const courseList = useSelector((state) => state.courseList);
-  const { loading, error, courses } = courseList;
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    dispatch(listCourses());
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        // Simulate your API call to fetch courses
+        const response = await fetch("/api/course/all");
+        const data = await response.json();
 
-  console.log(courses);
+        setCourses(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>
+    
+      <section className="py-5 mb-5">
+        <div className="container">
+          <div className="row text-center pb-5">
+            <h2 className="col-md-6 m-auto h2 semi-bold-600 py-5">
+              Our Popular Courses
+            </h2>
+          </div>
+          <div className="row gy-5 g-lg-5 mb-4">
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p>Error: {error}</p>
+            ) : (
+              courses.map((course) => (
+                <CourseBox
+                  key={course.id} // Make sure each item has a unique key
+                  courseName={course.course_name}
+                  courseOutline={course.course_outline}
+                />
+              ))
+            )}
+          </div>
+        </div>
+      </section>
       <section className="bg-info">
         <div className="container py-5">
           <div className="row d-flex justify-content-center text-center">
@@ -43,23 +77,6 @@ function Features() {
                 </button>
               </NavLink>
             </div>
-          </div>
-        </div>
-      </section>
-      <section className="py-5 mb-5">
-        <div className="container">
-          <div className="row text-center pb-5">
-            <h2 className="col-md-6 m-auto h2 semi-bold-600 py-5">
-              Our Popular Courses
-            </h2>
-          </div>
-          <div className="row gy-5 g-lg-5 mb-4">
-            {courses.map((course) => (
-              <CourseBox
-                courseName={course.course_name}
-                courseOutline={course.course_outline}
-              />
-            ))}
           </div>
         </div>
       </section>

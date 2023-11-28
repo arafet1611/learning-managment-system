@@ -21,7 +21,7 @@ app.use("/api/student", studentRoutes);
 
 app.use("/api/course", courseRoutes);
 
-const port = 8000 || process.env.PORT;
+const port = 5000 || process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Listening to port ${port}`);

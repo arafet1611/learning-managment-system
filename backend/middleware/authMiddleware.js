@@ -2,13 +2,13 @@ import jwt from "jsonwebtoken";
 import Teacher from "../models/teacherModel.js";
 
 const protectTeacher = async (req, res, next) => {
-  //console.log(req.headers.authorization)
+  console.log(req.headers.authorization);
   let token;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    console.log("token found");
+    //console.log("token found");
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, "abc123");

@@ -3,11 +3,7 @@ import mongoose from "mongoose";
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
-      "mongodb+srv://arafet:123@cluster0.mzyfwzl.mongodb.net/?retryWrites=true&w=majority",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      "mongodb+srv://arafet:123@cluster0.mzyfwzl.mongodb.net/?retryWrites=true&w=majority"
     );
 
     console.log(`MongoDB Connect: ${conn.connection.host}`);

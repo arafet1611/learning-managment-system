@@ -29,7 +29,6 @@ const teacherSchema = mongoose.Schema(
     },
     tchr_pic: {
       type: String,
-      required: false,
     },
     active: {
       type: Boolean,
