@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
+import { ToastContainer , toast  } from 'react-toastify';
 
 import axios from "axios";
 import Alert from "../components/Alert";
 import Footer from "../components/Footer";
 
 function TeacherLogin() {
-  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,11 +23,27 @@ function TeacherLogin() {
       if (data) {
         data.token = "Bearer " +data.token;
         localStorage.setItem("teacherInfo", JSON.stringify(data));
+        toast.success(`Welcome back ,Mr ${data.name} !`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
         console.log(data);
         window.location.replace("/teacher_dashboard");
       }
     } catch (err) {
-      setError(err.message || "An error occurred during login.");
+      if (err.response.status === 401) {
+        setError("Invalid email or password. Please try again.");
+      } else if (err.response.status === 404) {
+        setError("Account is not found , please try again.");
+      } else {
+        setError("An error occurred during login. Please try again later.");
+      }
     }
   };
 
@@ -109,6 +125,8 @@ function TeacherLogin() {
           </div>
         </div>
       </section>
+      <ToastContainer />
+
       <Footer />
     </div>
   );

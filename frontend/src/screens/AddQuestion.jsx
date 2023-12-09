@@ -1,9 +1,51 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import TeacherTabs from '../components/TeacherTabs';
 import QsnForTeacher from '../components/QsnForTeacher';
 import Footer from '../components/Footer';
-
+import axios from "axios";
+import { useParams } from 'react-router-dom';
 function AddQuestion() {
+  const [mark, setMark] = useState();
+  const [questionText, setQuestionText] = useState("");
+  const [option1, setOption1] = useState("");
+  const [option2, setOption2] = useState("");
+  const [option3, setOption3] = useState("");
+  const [option4, setOption4] = useState("");
+  const [answer, setAnswer] = useState("");
+
+  const { testId } = useParams();
+  const [testName, setTestName] = useState("");
+  console.log(testName);
+  const createQuestion = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('/api/question', {
+        question_text: questionText,
+        option1,
+        option2,
+        option3,
+        option4,
+        answer,
+      });
+
+      
+      console.log('Question created:', response.data);
+
+    
+      
+      setMark("");
+      setQuestionText("");
+      setOption1("");
+      setOption2("");
+      setOption3("");
+      setOption4("");
+      setAnswer("");
+    } catch (error) {
+      console.error('Error creating question:', error);
+     
+    }
+  };
   return (
     <div>
       <section>
@@ -17,61 +59,88 @@ function AddQuestion() {
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <select class="form-select form-control form-control-lg light-300" id="coursename" name="coursename" aria-label="Default select">
-                        <option selected>Select Course*</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                      <label for="test light-300">Select Test*</label>
+                      <p  className="form-control form-control-lg light-300"  >{testName}</p>
+                      <p></p>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <input type="number" className="form-control form-control-lg light-300" id="mark" name="mark" placeholder="Total Mark*" required/>
-                      <label for="mark light-300">Total Mark*</label>
+                      <input type="number" className="form-control form-control-lg light-300" 
+                      id="mark" name="mark"
+                       placeholder="Total Mark*"
+                       value={mark}
+                       Onchange={(event)=>setMark(event.target.value)} required/>
+                      <label for="mark light-300">Total Mark</label>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-12 mb-4">
                     <div className="form-floating">
-                      <input type="text" className="form-control form-control-lg light-300" id="questionText" name="questionText" placeholder="Question Text*" required/>
+                      <input type="text" className="form-control form-control-lg light-300" 
+                      id="questionText" name="questionText"
+                       placeholder="Question Text*"
+                       value={questionText}
+                       onChange={(event) => setQuestionText(event.target.value)}
+                        required/>
                       <label for="questionText light-300">Question Text*</label>
                     </div>
                   </div>
                   
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <input type="text" className="form-control form-control-lg light-300" id="option1" name="option1" placeholder="Option 1*" required/>
+                      <input type="text" className="form-control form-control-lg light-300"
+                       id="option1" name="option1"
+                        placeholder="Option 1*"
+                        value={option1}
+                        onChange={(event) => setOption1(event.target.value)}
+                         required/>
                       <label for="option1 light-300">Option 1*</label>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <input type="text" className="form-control form-control-lg light-300" id="option2" name="option2" placeholder="Option 2*" required/>
+                      <input type="text" className="form-control form-control-lg light-300"
+                      id="option2" name="option2" placeholder="Option 2*"
+                      value={option2}
+                      onChange={(event) => setOption2(event.target.value)}
+                       required/>
                       <label for="option2 light-300">Option 2*</label>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <input type="text" className="form-control form-control-lg light-300" id="option3" name="option3" placeholder="Option 3*" required/>
+                      <input type="text" 
+                      className="form-control form-control-lg light-300"
+                       id="option3" name="option3" placeholder="Option 3*"
+                       value={option3}
+                      onChange={(event) => setOption3(event.target.value)}
+                      required/>
                       <label for="option3 light-300">Option 3*</label>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <input type="text" className="form-control form-control-lg light-300" id="option2" name="option4" placeholder="Option 4*" required/>
+                      <input type="text"
+                       className="form-control form-control-lg light-300"
+                        id="option2" name="option4" placeholder="Option 4*"
+                        value={option4}
+                        onChange={(event) => setOption4(event.target.value)}
+                        required/>
                       <label for="option4 light-300">Option 4*</label>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-12 mb-4">
                     <div className="form-floating">
-                      <select class="form-select form-control form-control-lg light-300" id="answer" name="answer" aria-label="Default select">
+                      <select class="form-select form-control form-control-lg light-300" 
+                      id="answer" name="answer" aria-label="Default select"
+                      value={answer}
+                      onChange={(event) => setAnswer(event.target.value)}
+                      >
                         <option selected>Select Answer*</option>
                         <option value="1">Option 1</option>
                         <option value="2">Option 2</option>
@@ -83,7 +152,9 @@ function AddQuestion() {
                   </div>
                   
                   <div className="col-md-12 col-10 mx-auto my-3">
-                    <button type="submit" className="btn btn-info btn-lg rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300">Save Question</button>
+                    <button type="submit" 
+                    className="btn btn-info btn-lg rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
+                    onClick={createQuestion}>Save Question</button>
                   </div>
                 </form>
               </div>

@@ -1,26 +1,34 @@
 import Exam from "../models/examModel.js";
 
 const createExam = async (req, res) => {
-  const { exam_name, total_marks, created_by, course } = req.body;
-
-  const exam = new Exam({ exam_name, total_marks, created_by, course });
+  const { exam_name, total_marks, total_time, course } = req.body;
+  const created_by = req.user_id;
+  const exam = new Exam({
+    exam_name,
+    total_marks,
+    total_time,
+    created_by,
+    course,
+  });
   try {
-    const createdExam = await Exam.save();
+    const createdExam = await exam.save();
     res.status(201).json(createdExam);
   } catch (error) {
-    res.status(400);
-    throw new Error("Unable to create exam");
+    console.error("Error creating exam:", error);
+    res
+      .status(400)
+      .json({ error: "Unable to create exam", details: error.message });
   }
 };
 const getSpecificExam = async (req, res) => {
-  const courses = await Exam.find({});
-  const courseData = courses.filter((course) => {
-    if (course.created_by.equals(req.params.id)) {
-      return course;
+  const exams = await Exam.find({});
+  const examData = exams.filter((exam) => {
+    if (exam.course.equals(req.params.id)) {
+      return exam;
     }
   });
 
-  res.status(200).send(courseData);
+  res.status(200).send(examData);
 };
 const updateExam = async (req, res) => {
   const { exam_name, total_marks } = req.body;

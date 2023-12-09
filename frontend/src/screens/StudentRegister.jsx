@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Footer from "../components/Footer";
 import axios from "axios";
@@ -11,7 +11,21 @@ function StudentRegister() {
   const [coursename, setCoursename] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("");
 
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get("/api/course/all");
+        setCourses(response.data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
   const handleFileChange = (event) => {
     // Handle file changes and set the file data
     const file = event.target.files[0];
@@ -136,15 +150,19 @@ function StudentRegister() {
                         className="form-select form-control form-control-lg light-300"
                         id="coursename"
                         name="coursename"
+                        value={selectedCourse}
                         aria-label="Default select"
-                        onChange={(event) => {
-                          setCoursename(event.target.value);
-                        }}
+                        onChange={(e) => setSelectedCourse(e.target.value)}
                       >
                         <option selected>Select Course*</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="" disabled>
+                          Select Course*
+                        </option>
+                        {courses.map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.course_name}
+                          </option>
+                        ))}
                       </select>
                       <label for="subject light-300">Select Course*</label>
                     </div>

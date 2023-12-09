@@ -12,6 +12,10 @@ const resultSchema = mongoose.Schema(
       required: true,
       ref: "Exam",
     },
+    nbCorrectAnswers: {
+      type: Number,
+      default: 0,
+    },
     marks_obtained: {
       type: Number,
       required: true,

@@ -4,21 +4,31 @@ import { NavLink } from "react-router-dom";
 function Navbar() {
   const [teacherInfo, setTeacherInfo] = useState(null);
   const [studentInfo, setStudentInfo] = useState(null);
-
+    const [date , setdata] = useState("name");
   useEffect(() => {
     const storedTeacherInfo = localStorage.getItem("teacherInfo");
     const storedStudentInfo = localStorage.getItem("studentInfo");
-
-    if (storedTeacherInfo) setTeacherInfo(JSON.parse(storedTeacherInfo)) ;
-    if (storedStudentInfo) setStudentInfo(JSON.parse(storedStudentInfo));
+  
+    try {
+      if (storedTeacherInfo) setTeacherInfo(JSON.parse(storedTeacherInfo));
+      if (storedStudentInfo) setStudentInfo(JSON.parse(storedStudentInfo));
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      setTeacherInfo(null);
+      setStudentInfo(null);
+    }
   }, []);
   const logoutHandler = () => {
     if(teacherInfo){
     localStorage.removeItem("teacherInfo");
     setTeacherInfo(null);
+    window.location.replace("/");
+
     }else if(studentInfo){
     localStorage.removeItem("studentInfo");
     setStudentInfo(null);
+    window.location.replace("/");
+
     }
   };
 

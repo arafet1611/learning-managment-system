@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom"; // Updated import
+import { NavLink } from "react-router-dom"; 
+import Alert from "../components/Alert";
+
 import Footer from "../components/Footer";
 import axios from "axios";
 
 function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Updated hook
   const [error, setError] = useState("");
   console.log(error);
   const submitHandler = async (event) => {
@@ -16,14 +17,16 @@ function StudentLogin() {
         stud_email: email,
         password,
       });
-      console.log(response);
+      const { data } = response;
 
-      if (response) {
-        localStorage.setItem("studentInfo", JSON.stringify(response.data));
+      if (data) {
+        data.token = "Bearer " +data.token;
+
+        localStorage.setItem("studentInfo", JSON.stringify(data));
         window.location.replace("/student_dashboard");
-        console.log("Login successful:", response.data);
+        console.log("Login successful:", data);
       } else {
-        throw new Error("Invalid credentials " + response.Error);
+        throw new Error("Invalid credentials ");
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -38,6 +41,7 @@ function StudentLogin() {
         <div id="page_banner2" className="banner-wrapper bg-light w-100 py-5">
           <div className="container text-light d-flex justify-content-center align-items-center py-5 p-0">
             <div className="banner-content col-lg-8 col-12 m-lg-auto text-center">
+            {error && <Alert type="danger">{error}</Alert>}
               <h1 className="banner-heading display-3 pb-5 semi-bold-600 typo-space-line-center">
                 Student Login
               </h1>

@@ -4,7 +4,6 @@ const questionSchema = mongoose.Schema(
   {
     exam: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Exam",
     },
     question_text: {
@@ -14,7 +13,6 @@ const questionSchema = mongoose.Schema(
     },
     mark: {
       type: Number,
-      required: true,
     },
     option1: {
       type: String,

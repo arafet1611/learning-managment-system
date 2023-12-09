@@ -9,7 +9,7 @@ const examSchema = mongoose.Schema(
     },
     no_of_questions: {
       type: Number,
-      required: true,
+      default: 0,
     },
     total_marks: {
       type: Number,
@@ -22,12 +22,10 @@ const examSchema = mongoose.Schema(
     },
     created_by: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Teacher",
     },
     course: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Course",
     },
     active: {

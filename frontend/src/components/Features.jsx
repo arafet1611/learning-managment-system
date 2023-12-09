@@ -44,7 +44,8 @@ function Features() {
             ) : (
               courses.map((course) => (
                 <CourseBox
-                  key={course.id} // Make sure each item has a unique key
+                  key={course._id}
+                  courseId={course._id} 
                   courseName={course.course_name}
                   courseOutline={course.course_outline}
                 />

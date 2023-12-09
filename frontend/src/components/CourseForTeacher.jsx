@@ -12,7 +12,7 @@ function CourseForTeacher({ spcfcourses }) {
   const submitHandler = (event) => {
     event.preventDefault();
     axios
-      .put(`/api/courses/${courseId}`, {
+      .put(`/api/course/update/${courseId}`, {
         course_name: courseName,
         course_outline: courseOutline,
         total_units: courseUnits,
@@ -51,7 +51,7 @@ function CourseForTeacher({ spcfcourses }) {
 
   const handleDelete = (id) => {
     axios
-      .delete(`/api/courses/${id}`,{
+      .delete(`/api/course/delete/${id}`,{
         headers: {
           Authorization: teacherInfo.token,
         },

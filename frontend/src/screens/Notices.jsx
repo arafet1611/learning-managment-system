@@ -20,9 +20,7 @@ function About() {
               <p className="light-300">
                 Keep youself updated. Check out and try to join our various events, seminars, webinars and workshops regularly.
               </p>
-              <p className="text-muted">
-                Vector illustration credit goes to <a rel="noreferrer" href="http://freepik.com/" target="_blank">FreePik</a> website.
-              </p>
+             
             </div>
           </div>
         </div>

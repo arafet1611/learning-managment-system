@@ -73,11 +73,15 @@ function Courses() {
             <p>An error occurred: {error}</p>
           ) : (
             courses.map((course) => (
+              
               <CourseBox
-                key={course.id}
+                key={course._id}
+                courseId={course._id}
                 courseName={course.course_name}
                 courseOutline={course.course_outline}
+                
               />
+              
             ))
           )}
         </div>

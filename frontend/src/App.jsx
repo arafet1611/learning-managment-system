@@ -22,13 +22,22 @@ import StudentLogin from "./screens/StudentLogin";
 import StudentRegister from "./screens/StudentRegister";
 import StudentDash from "./screens/StudentDash";
 import "./App.css";
-
+import TestQuestion from "./screens/TestQuestion";
+import CourseUnits from "./screens/CourseUnits";
+import ResultList from "./screens/ResultList";
+import StudentProfile from "./screens/StudentProfile";
+import CourseInfo from "./screens/CourseInfo";
 function App() {
   return (
     <div className="app">
       <Router>
         <Navbar />
         <Routes>
+          <Route path="/course/results" element={<ResultList />} />
+          <Route path="/course/:id" element={<CourseInfo />} />
+          <Route path="/courses/units" element={<CourseUnits />} />
+          <Route path="/Profile/student" element={<StudentProfile/>} />
+          <Route path="/test" element={<TestQuestion />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />

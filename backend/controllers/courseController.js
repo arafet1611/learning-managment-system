@@ -1,5 +1,5 @@
 import Course from "../models/courseModel.js";
-
+import Student from "../models/studentModel.js";
 const createCourse = async (req, res) => {
   const { course_name, course_outline, total_units } = req.body;
 
@@ -45,7 +45,19 @@ const getSpecificCourses = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+const getCoursebyid = async (req, res) => {
+  try {
+    const courses = await Course.find({});
+    const course = courses.filter((course) => {
+      return course._id.equals(req.params.id);
+    });
 
+    res.status(200).send(course);
+  } catch (error) {
+    console.error("Error fetching course:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 const updateCourse = async (req, res) => {
   const { course_name, course_outline, total_units } = req.body;
 
@@ -64,17 +76,37 @@ const updateCourse = async (req, res) => {
   }
 };
 
+const subcribeToCourse = async (req, res) => {
+  try {
+    const { course_id } = req.body;
+
+    const course = await Course.findById(course_id);
+
+    if (course) {
+      const student = await Student.findById(req.user._id);
+      student.course.push(course_id);
+
+      const updatedStudent = await student.save();
+      res.json(updatedStudent);
+    } else {
+      res.status(404).json({ error: "Course not found" });
+    }
+  } catch (error) {
+    console.error("Error subscribing to course", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const deleteCourse = async (req, res) => {
   const id = req.params.id;
 
-  Course.findOneAndRemove({ _id: id }, function (err) {
-    if (err) {
-      res.status(404);
-      throw new Error("Course not found");
-    } else {
-      res.json({ message: "The course has been deleted" });
-    }
-  });
+  const course = await Course.findByIdAndDelete(id);
+  if (!course) {
+    res.status(404);
+    throw new Error("Course not found");
+  } else {
+    res.json({ message: "The course has been deleted" });
+  }
 };
 
 export {
@@ -83,4 +115,6 @@ export {
   getSpecificCourses,
   updateCourse,
   deleteCourse,
+  subcribeToCourse,
+  getCoursebyid,
 };

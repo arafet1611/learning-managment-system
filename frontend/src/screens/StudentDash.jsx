@@ -14,7 +14,7 @@ function StudentDash() {
               
               <div className="row gx-5 gx-sm-3 gx-lg-5 gy-lg-5 gy-3 pb-3 m-0">
                 <div className="col-xl-3 col-md-4 col-sm-6">
-                  <NavLink to="/" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
+                  <NavLink to="/courses" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
                     <img className="course card-img" src={bck} alt="courseImage"/>
                     <div className="course-vertical card-img-overlay d-flex align-items-end">
                       <div className="course-content text-left text-light">
@@ -25,7 +25,7 @@ function StudentDash() {
                 </div>
 
                 <div className="col-xl-3 col-md-4 col-sm-6">
-                  <NavLink to="/" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
+                  <NavLink to="/tests" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
                     <img className="course card-img" src={bck} alt="courseImage"/>
                     <div className="course-vertical card-img-overlay d-flex align-items-end">
                       <div className="course-content text-left text-light">
@@ -36,7 +36,7 @@ function StudentDash() {
                 </div>
 
                 <div className="col-xl-3 col-md-4 col-sm-6">
-                  <NavLink to="/" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
+                  <NavLink to="/course/results" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
                     <img className="course card-img" src={bck} alt="courseImage"/>
                     <div className="course-vertical card-img-overlay d-flex align-items-end">
                       <div className="course-content text-left text-light">
@@ -47,7 +47,7 @@ function StudentDash() {
                 </div>
 
                 <div className="col-xl-3 col-md-4 col-sm-6">
-                  <NavLink to="/" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
+                  <NavLink to="/Profile/student" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
                     <img className="course card-img" src={bck} alt="courseImage"/>
                     <div className="course-vertical card-img-overlay d-flex align-items-end">
                       <div className="course-content text-left text-light">

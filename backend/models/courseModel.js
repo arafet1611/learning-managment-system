@@ -13,7 +13,7 @@ const courseSchema = mongoose.Schema(
     total_units: {
       type: Number,
       required: true,
-      default: 1,
+      default: 0,
     },
     total_students: {
       type: Number,

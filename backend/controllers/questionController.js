@@ -1,11 +1,11 @@
 import Question from "../models/questionModel.js";
+import mongoose from "mongoose";
 
 const createQuestion = async (req, res) => {
-  const { exam, question_text, option1, option2, option3, option4, answer } =
+  const { question_text, option1, option2, option3, option4, answer } =
     req.body;
 
   const question = new Question({
-    exam: exam,
     question_text: question_text,
     option1: option1,
     option2: option2,
@@ -23,10 +23,22 @@ const createQuestion = async (req, res) => {
   }
 };
 
-const getQuestions = async (req, res) => {
-  const questions = await Question.find({});
+const getQuestionsByExam = async (req, res) => {
+  try {
+    const { examId } = req.query;
+    console.log("exam id", examId);
+    const objectIdExamId = new mongoose.Types.ObjectId(examId);
 
-  res.json(questions);
+    const questions = await Question.find({ exam: objectIdExamId }).exec();
+
+    if (questions && questions.length > 0) {
+      res.status(200).json(questions);
+    } else {
+      res.status(404).json({ error: "No questions found for the given exam." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 const getSpecificQuestions = async (req, res) => {
@@ -92,7 +104,7 @@ const getCorrectAnswer = async (req, res) => {
 };
 export {
   createQuestion,
-  getQuestions,
+  getQuestionsByExam,
   getSpecificQuestions,
   updateQuestion,
   deleteQuestion,
