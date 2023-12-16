@@ -3,7 +3,7 @@ import { Modal, Button, Container, Card } from 'react-bootstrap';
 import studyImg from '../assets/img/study.jpg';
 import Footer from "../components/Footer";
 
-function CourseUnits() {
+function AddUnits() {
   const [tasks, setTasks] = useState([]);
   const [opened, setOpened] = useState(false);
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
@@ -175,4 +175,4 @@ function CourseUnits() {
   );
 }
 
-export default CourseUnits;
+export default AddUnits;

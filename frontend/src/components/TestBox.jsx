@@ -5,7 +5,7 @@ import bck from "../assets/img/workspace.jpg";
 function TestBox({testID, testName, questions, marks, time, courseName}) {
   return (
     <div className="col-xl-3 col-md-4 col-sm-6 filter frontend">
-      <NavLink to="/" exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
+      <NavLink to={`/course/exam/${testID}/test`} exact className="course card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0">
         <img className="course card-img" src={bck} alt="courseImage"/>
         <div className="course-vertical card-img-overlay d-flex align-items-end">
           <div className="course-content text-left text-light">

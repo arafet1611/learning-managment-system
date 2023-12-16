@@ -1,39 +1,85 @@
-import React ,{useState} from 'react';
+import React ,{useEffect, useState}from 'react';
 import TeacherTabs from '../components/TeacherTabs';
 import QsnForTeacher from '../components/QsnForTeacher';
 import Footer from '../components/Footer';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 function AddQuestion() {
-  const [mark, setMark] = useState();
+  const [mark, setMark] = useState('');
   const [questionText, setQuestionText] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
   const [answer, setAnswer] = useState("");
+  const[questions , setQuestions ] = useState([]);
+  const [totalQuestion , setTotalQuestion] = useState(0);
+  const {testId} = useParams() ;
+  const storedTeacherInfo = localStorage.getItem("teacherInfo")
+  const teacherInfo = storedTeacherInfo ? JSON.parse(storedTeacherInfo ): null;
 
-  const { testId } = useParams();
-  const [testName, setTestName] = useState("");
-  console.log(testName);
+ 
+
+  useEffect(()=>{
+    fetchQuestions();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+  const fetchQuestions = async ()=>{
+    try{
+      const response = await axios.get(`/api/question/${testId}`,
+      {
+        headers: {
+          Authorization: teacherInfo.token,
+        },
+      });
+      setQuestions(response.data);
+      setTotalQuestion(response.data.length);
+      
+      
+    }catch(error){
+      console.error("error getting  question by Exam:", error);
+    }
+  }
+
+
+  useEffect(()=>{
+    const updateTotalQuestion = async ()=>{
+      try{
+       
+        const response = await axios.put(`/api/exam/increaseQuestion/${testId}`,{
+          no_of_questions : totalQuestion,
+        })
+       
+      console.log("update Total Question successfully",response.data.message);
+      }catch (err){
+        console.error("Error updating total question:", err.response?.data || err.message);
+        
+      }
+    };
+    updateTotalQuestion();
+   },[testId, totalQuestion]);
+   
+ 
+
   const createQuestion = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post('/api/question', {
+        exam : testId ,
         question_text: questionText,
+        mark : mark,
         option1,
         option2,
         option3,
         option4,
         answer,
+      },{
+        headers: {
+          Authorization: teacherInfo.token,
+        },
       });
-
-      
-      console.log('Question created:', response.data);
-
-    
-      
+      console.log('Question created:', response.data);      
       setMark("");
       setQuestionText("");
       setOption1("");
@@ -46,6 +92,8 @@ function AddQuestion() {
      
     }
   };
+  
+  
   return (
     <div>
       <section>
@@ -59,18 +107,19 @@ function AddQuestion() {
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <p  className="form-control form-control-lg light-300"  >{testName}</p>
+                      <p  className="form-control form-control-lg light-300"  >{ testId.substring(0, 6)}</p>
                       <p></p>
                     </div>
                   </div>
 
                   <div className="col-10 col-lg-6 mb-4">
                     <div className="form-floating">
-                      <input type="number" className="form-control form-control-lg light-300" 
+                      <input type="number" 
+                      className="form-control form-control-lg light-300" 
                       id="mark" name="mark"
-                       placeholder="Total Mark*"
+                       placeholder="Total Mark"
                        value={mark}
-                       Onchange={(event)=>setMark(event.target.value)} required/>
+                       onChange={(event) => setMark(event.target.value)} required/>
                       <label for="mark light-300">Total Mark</label>
                     </div>
                   </div>
@@ -156,6 +205,7 @@ function AddQuestion() {
                     className="btn btn-info btn-lg rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
                     onClick={createQuestion}>Save Question</button>
                   </div>
+                 
                 </form>
               </div>
             </div>
@@ -165,27 +215,7 @@ function AddQuestion() {
 
       <section className="bg-light pt-sm-0 py-5">
         
-        <QsnForTeacher
-          qsnID = "2"
-          qsnText = "What is a question?"
-          mark = "1"
-          option1 = "Option 1"
-          option2 = "Option 2"
-          option3 = "Option 3"
-          option4 = "Option 4"
-          answer = "Option3"
-        />
-        <QsnForTeacher
-          qsnID = "1"
-          qsnText = "What is a question?"
-          mark = "1"
-          option1 = "Option 1"
-          option2 = "Option 2"
-          option3 = "Option 3"
-          option4 = "Option 4"
-          answer = "Option2"
-        />
-
+        <QsnForTeacher spcfquestions ={questions} />     
       </section>
       <Footer/>
     </div>

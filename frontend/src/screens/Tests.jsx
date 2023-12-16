@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import TestBox from '../components/TestBox';
 import Footer from '../components/Footer';
+import axios  from 'axios';
+ 
 
 function Tests() {
+  const [tests , setTests] = useState([]);
+  const storedTeacherInfo = localStorage.getItem('teacherInfo');
+  const teacherInfo = storedTeacherInfo ? JSON.parse(storedTeacherInfo) : null;
+  useEffect (()=>{
+    const fetchTests = async ()=>{
+      try{
+        const response = await axios.get("/api/exam");
+        setTests(response.data)
+      }catch(err){
+        console.error("An error to fetching tests",err);
+      }
+    };
+    fetchTests() ;
+  },[])
   return (
     <div>
       <section>
@@ -38,39 +54,18 @@ function Tests() {
 
       <section className="container overflow-hidden py-5">
         <div className="row gx-5 gx-sm-3 gx-lg-5 gy-lg-5 gy-3 pb-3 courses">
-
-          <TestBox
-            testID = "1"
-            testName = "Unit Test - 1"
-            questions = "50"
-            marks = "50"
-            time = "60"
-            courseName = "First Course Name"
+         { tests.map((test)=>(
+            <TestBox
+            key = {test._id}
+            testName = {test.exam_name}
+            questions = {test.no_of_question}
+            marks = {test.total_marks}
+            time = {test.total_time}
           />
-          <TestBox
-            testID = "2"
-            testName = "Unit Test - 2"
-            questions = "50"
-            marks = "50"
-            time = "60"
-            courseName = "Second Course Name"
-          />
-          <TestBox
-            testID = "3"
-            testName = "Unit Test - 3"
-            questions = "50"
-            marks = "50"
-            time = "60"
-            courseName = "Third Course Name"
-          />
-          <TestBox
-            testID = "4"
-            testName = "Unit Test - 4"
-            questions = "50"
-            marks = "50"
-            time = "60"
-            courseName = "Fourth Course Name"
-          />
+          ))
+         }
+         
+         
 
         </div>
       </section>

@@ -14,7 +14,6 @@ const resultSchema = mongoose.Schema(
     },
     nbCorrectAnswers: {
       type: Number,
-      default: 0,
     },
     marks_obtained: {
       type: Number,

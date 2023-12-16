@@ -47,27 +47,66 @@ const updateExam = async (req, res) => {
   }
 };
 const deleteExam = async (req, res) => {
-  const id = req.params.id;
+  try {
+    const deletedExam = await Exam.deleteOne({ _id: req.params.id });
 
-  Exam.findOneAndRemove({ _id: id }, function (err) {
-    if (err) {
-      res.status(404);
-      throw new Error("Exam not found");
-    } else {
-      res.json({ message: "The exam has been deleted" });
+    if (!deletedExam) {
+      res.status(404).json({ message: "Exam not found" });
+      return;
     }
-  });
+
+    res.json({ message: "The exam has been deleted" });
+  } catch (error) {
+    console.error("Error deleting exam", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
+
 const IncreaseNumberOfQuestions = async (req, res) => {
   const { no_of_questions } = req.body;
   const exam = await Exam.findById(req.params.id);
   if (exam) {
     exam.no_of_questions = no_of_questions;
-    const updatedExam = await Exam.save();
+    const updatedExam = await exam.save();
     res.json(updatedExam);
   } else {
     res.status(404);
     throw new Error("Exam not found");
+  }
+};
+const getExams = async (req, res) => {
+  try {
+    const exams = await Exam.find({});
+    res.status(201).json(exams);
+  } catch (err) {
+    console.error("error to get all exams", err);
+  }
+};
+const changeResultStatue = async (req, res) => {
+  const { resultStatue } = req.body;
+  const exam = await Exam.findById(req.params.id);
+  if (exam) {
+    exam.result_statue = resultStatue;
+    const updatedExam = await exam.save();
+    res.json(updatedExam);
+  } else {
+    res.status(404);
+    throw new Error("Exam not found");
+  }
+};
+const getExamsByCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const exams = await Exam.find().exec();
+    const courseExams = exams.filter((exam) => exam.course.equals(id));
+
+    if (courseExams.length > 0) {
+      res.status(200).json(courseExams);
+    } else {
+      res.status(404).json({ error: "No exams found for the given course." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 export {
@@ -76,4 +115,7 @@ export {
   updateExam,
   deleteExam,
   IncreaseNumberOfQuestions,
+  getExams,
+  getExamsByCourse,
+  changeResultStatue,
 };

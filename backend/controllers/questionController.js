@@ -1,11 +1,12 @@
 import Question from "../models/questionModel.js";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 
 const createQuestion = async (req, res) => {
   const { question_text, option1, option2, option3, option4, answer } =
     req.body;
-
+  const { exam } = req.params;
   const question = new Question({
+    exam: exam,
     question_text: question_text,
     option1: option1,
     option2: option2,
@@ -27,12 +28,17 @@ const getQuestionsByExam = async (req, res) => {
   try {
     const { examId } = req.query;
     console.log("exam id", examId);
-    const objectIdExamId = new mongoose.Types.ObjectId(examId);
+    const ObjectId = mongoose.Types.ObjectId;
 
-    const questions = await Question.find({ exam: objectIdExamId }).exec();
+    const examidobj = new ObjectId(examId);
+    const questions = await Question.find().exec();
+    console.log("questions", questions);
+    const examQuestions = questions.filter((question) =>
+      question.exam.equals(examidobj)
+    );
 
-    if (questions && questions.length > 0) {
-      res.status(200).json(questions);
+    if (examQuestions.length > 0) {
+      res.status(200).json(examQuestions);
     } else {
       res.status(404).json({ error: "No questions found for the given exam." });
     }
@@ -45,7 +51,7 @@ const getSpecificQuestions = async (req, res) => {
   const questions = await Question.find({});
 
   const questionData = questions.filter((question) => {
-    if (question.exam.equals(req.user._id)) {
+    if (question.exam.equals(req.params.id)) {
       return question;
     }
   });
@@ -54,13 +60,12 @@ const getSpecificQuestions = async (req, res) => {
 };
 
 const updateQuestion = async (req, res) => {
-  const { exam, question_text, option1, option2, option3, option4, answer } =
+  const { question_text, option1, option2, option3, option4, answer } =
     req.body;
 
   const question = await Question.findById(req.params.id);
 
   if (question) {
-    question.exam = exam;
     question.question_text = question_text;
     question.option1 = option1;
     question.option2 = option2;
@@ -77,16 +82,19 @@ const updateQuestion = async (req, res) => {
 };
 
 const deleteQuestion = async (req, res) => {
-  const id = req.params.id;
+  try {
+    const deleteQuestion = await Question.deleteOne({ _id: req.params.id });
 
-  Question.findOneAndRemove({ _id: id }, function (err) {
-    if (err) {
-      res.status(404);
-      throw new Error("Question not found");
-    } else {
-      res.json({ message: "The question has been deleted" });
+    if (!deleteQuestion) {
+      res.status(404).json({ message: "question not found" });
+      return;
     }
-  });
+
+    res.json({ message: "The question has been deleted" });
+  } catch (error) {
+    console.error("Error deleting question", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 const getCorrectAnswer = async (req, res) => {
   try {

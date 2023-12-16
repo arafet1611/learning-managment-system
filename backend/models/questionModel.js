@@ -13,6 +13,7 @@ const questionSchema = mongoose.Schema(
     },
     mark: {
       type: Number,
+      default: 1,
     },
     option1: {
       type: String,

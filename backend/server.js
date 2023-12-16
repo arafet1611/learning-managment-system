@@ -6,7 +6,7 @@ import courseRoutes from "./routes/courseRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import questionRoutes from "./routes/questionRoutes.js";
 import examRoutes from "./routes/examRoutes.js";
-
+import resultRoutes from "./routes/resultRoutes.js";
 dotenv.config();
 
 connectDB();
@@ -25,6 +25,7 @@ app.use("/api/student", studentRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/question", questionRoutes);
 app.use("/api/exam", examRoutes);
+app.use("/api/result", resultRoutes);
 const port = 5000 || process.env.PORT;
 
 app.listen(port, () => {

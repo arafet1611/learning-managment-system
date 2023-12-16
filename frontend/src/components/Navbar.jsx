@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 function Navbar() {
   const [teacherInfo, setTeacherInfo] = useState(null);
   const [studentInfo, setStudentInfo] = useState(null);
-    const [date , setdata] = useState("name");
   useEffect(() => {
     const storedTeacherInfo = localStorage.getItem("teacherInfo");
     const storedStudentInfo = localStorage.getItem("studentInfo");
@@ -18,6 +17,9 @@ function Navbar() {
       setStudentInfo(null);
     }
   }, []);
+  useEffect (()=> {
+
+  })
   const logoutHandler = () => {
     if(teacherInfo){
     localStorage.removeItem("teacherInfo");
@@ -36,7 +38,7 @@ function Navbar() {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow">
         <div className="container">
-          <NavLink className="navbar-brand fs-3 fw-bold" to="/" exact>
+          <NavLink className="navbar-brand fs-3 fw-bold" to="/" exact={true}>
             <i className="bi-building text-success"></i>
             <span className="text-dark">3</span>
             <span className="text-primary">L</span>

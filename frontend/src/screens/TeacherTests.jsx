@@ -3,7 +3,6 @@ import TeacherTabs from '../components/TeacherTabs';
 import TestForTeacher from '../components/TestForTeacher';
 import Footer from '../components/Footer';
 import axios from 'axios';
-import { set } from 'mongoose';
 
 function TeacherTests() {
   const [courses, setCourses] = useState([]);
@@ -22,7 +21,14 @@ function TeacherTests() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get('/api/course/all');
-        setCourses(response.data);
+        if (response.data.length === 0) {
+    
+          console.log('No courses found.');
+        } else {
+        
+          setCourses(response.data);
+        }
+  
         setLoadingCourses(false);
       } catch (error) {
         console.error('Error fetching courses:', error);
@@ -48,7 +54,7 @@ function TeacherTests() {
       }
     };
     fetchExams();
-  }, [selectedCourse]);
+  }, [teacherInfo])
 
   const createTest = async () => {
     try {
@@ -70,14 +76,17 @@ function TeacherTests() {
       setExamName('');
       setTotalMarks('');
       setTotalTime('');
+      setSelectedCourse('');
       console.log(response.data);
     } catch (error) {
       console.error('Error creating test:', error);
     }
   };
+ 
 
   return (
     <div>
+      {/* ... Your existing code ... */}
 
       <section>
         <div id="page_banner2" className="banner-wrapper bg-light w-100 py-5">
@@ -113,15 +122,16 @@ function TeacherTests() {
                         value={selectedCourse}
                         onChange={(event) => setSelectedCourse(event.target.value)}
                       >
-                        <option selected>Select Course</option>
-                        {loadingCourses ? (
-                          <option disabled>Loading...</option>
-                        ) : (
-                          courses.map((course) => (
-                            <option key={course._id} value={course._id}>
+                           <option selected>Select Course</option>
+                               {loadingCourses ? (
+                              <option disabled>Loading...</option>
+                               ) : courses.length === 0 ? (
+                               <option disabled>No courses found</option>
+                              ) : (
+                               courses.map((course) => (
+                              <option key={course._id} value={course._id}>
                               {course.course_name}
-                        
-                            </option>
+                             </option>
                           ))
                         )}
                       </select>

@@ -23,7 +23,7 @@ import StudentRegister from "./screens/StudentRegister";
 import StudentDash from "./screens/StudentDash";
 import "./App.css";
 import TestQuestion from "./screens/TestQuestion";
-import CourseUnits from "./screens/CourseUnits";
+import AddUnits from "./screens/AddUnits";
 import ResultList from "./screens/ResultList";
 import StudentProfile from "./screens/StudentProfile";
 import CourseInfo from "./screens/CourseInfo";
@@ -33,11 +33,12 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+
           <Route path="/course/results" element={<ResultList />} />
           <Route path="/course/:id" element={<CourseInfo />} />
-          <Route path="/courses/units" element={<CourseUnits />} />
+          <Route path="/course/:id/units" element={<AddUnits />} />
           <Route path="/Profile/student" element={<StudentProfile/>} />
-          <Route path="/test" element={<TestQuestion />} />
+          <Route path="/course/exam/:examId/test" element={<TestQuestion />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
@@ -49,8 +50,9 @@ function App() {
           <Route path="/teacher_dashboard" element={<TeacherDash />} />
           <Route path="/teacher_courses" element={<TeacherCourses />} />
           <Route path="/teacher_tests" element={<TeacherTests />} />
-          <Route path="/add_question" element={<AddQuestion />} />
+          <Route path="/add_question/:testId" element={<AddQuestion />} />
           <Route path="/student_login" element={<StudentLogin />} />
+
           <Route path="/student_register" element={<StudentRegister />} />
           <Route path="/student_dashboard" element={<StudentDash />} />
           <Route path="*" element={<Navigate to="/" />} />

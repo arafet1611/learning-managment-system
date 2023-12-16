@@ -125,7 +125,6 @@ function TeacherLogin() {
           </div>
         </div>
       </section>
-      <ToastContainer />
 
       <Footer />
     </div>

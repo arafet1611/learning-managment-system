@@ -1,31 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ListGroup } from 'react-bootstrap';
+import axios from 'axios';
 
 function StudentResult() {
-  const [showPassed, setShowPassed] = useState(true);
+  const [results, setResults] = useState([]);
+  const [passed, setPassed] = useState(false);
+  const [studentInfo, setStudentInfo] = useState(null);
+  const [studentToken, setStudentToken] = useState("");
 
-  const exams = [
-    { name: 'Math Exam', nbCorrectAnswers: 15, totalQuestions: 20, marksObtained: 80, passed: true },
-    { name: 'History Exam', nbCorrectAnswers: 18, totalQuestions: 20, marksObtained: 60, passed: false },
-  ];
+  useEffect(() => {
+    const storedStudentInfo = localStorage.getItem("studentInfo");
 
-  const filteredExams = exams.filter((exam) => exam.passed === showPassed);
+    try {
+      if (storedStudentInfo) {
+        const parsedStudentInfo = JSON.parse(storedStudentInfo);
+        setStudentInfo(parsedStudentInfo);
+        setStudentToken(parsedStudentInfo.token);
+      }
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      setStudentInfo(null);
+    }
+  }, []);
+  useEffect(() => {
+    if (studentToken) {
+      axios.get('/api/result', {
+        headers: {
+          Authorization: studentToken,
+        },
+      })
+        .then((response) => setResults(response.data))
+        .catch((error) => console.error('Error fetching data:', error));
+    }
+  }, [studentToken]);
+  const filteredresults = results.filter((result) => (result.marks_obtained >= 15 && passed) || (result.marks_obtained < 15 && !passed));
 
+  const determineStatus = (marksObtained) => {
+    return marksObtained >= 15;
+  };
+
+  const handleTogglePassed = () => {
+    setPassed((prevPassed) => !prevPassed);
+  };
   return (
     <div className="container mt-4">
-      <h3 className="mb-3">Student Results</h3>
-      <Button variant="info" onClick={() => setShowPassed(!showPassed)}>
-        {showPassed ? 'Show Failed Exams' : 'Show Passed Exams'}
+    <center>  <h3 className="mb-3">My Results</h3>
+      <Button variant="info" onClick={handleTogglePassed}>
+        {!passed ? 'Show Failed Exams' : 'Show Passed Exams'}
       </Button>
+      </center>
       <ListGroup className="mt-3">
-        {filteredExams.map((exam, index) => (
-          <ListGroup.Item key={index}>
-            <h5>{exam.name}</h5>
+        {filteredresults.map((result) => (
+          
+          <ListGroup.Item key={result._id}>
+      <h5>{result.exam ? result.exam.exam_name : "Exam Name Not Available"}</h5>
             <p>
-              Correct Answers: {exam.nbCorrectAnswers} / {exam.totalQuestions}
+              Correct Answers: {result.nbCorrectAnswers} / {result.exam.no_of_questions}
             </p>
-            <p>Marks Obtained: {exam.marksObtained}</p>
-            <p>Status: {exam.passed ? 'Passed' : 'Failed'}</p>
+            <p>Marks Obtained: {result.marks_obtained}</p>
+            <p>Status: {determineStatus(result.marks_obtained) ? 'Passed' : 'Failed'}</p>
           </ListGroup.Item>
         ))}
       </ListGroup>
