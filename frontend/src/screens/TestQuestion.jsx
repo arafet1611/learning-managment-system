@@ -195,9 +195,27 @@ function TestQuestion(courseId) {
   }, [studentToken]);
 
   return (
-    <div>
+    
+        <div className="container mt-4">
+      <section>
+        <div id="page_banner1" className="banner-wrapper bg-light w-100 py-5">
+          <div className="container text-light d-flex justify-content-center align-items-center py-5 p-0">
+            <div className="banner-content col-lg-8 col-12 m-lg-auto text-center">
+              <h1 className="banner-heading display-3 pb-5 semi-bold-600 typo-space-line-center">
+                Courses
+              </h1>
+              <h3 className="pb-2 regular-400">
+                We are offering a wide range of courses
+              </h3>
+              <p className="banner-body pb-2 light-300">
+                We are glad to help you achieve your goal.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className="app-container">
-        <h1>Simple Quiz</h1>
+        <h1>Course Test </h1>
         <div className="counter">
           Questions Answered: {answeredQuestions} of {totalQuestions}
         </div>
@@ -234,7 +252,23 @@ function TestQuestion(courseId) {
           )}
         </div>
       </div>
-      
+      <section className="bg-info">
+        <div className="container py-5">
+          <div className="row d-flex justify-content-center text-center">
+            <div className="col-lg-2 col-12 text-light align-items-center">
+              <i className="display-1 bi-stars bi-lg"></i>
+            </div>
+            <div className="col-lg-8 col-12 text-light pt-2">
+              <p className="light-300">Don't just study for certification</p>
+              <h3 className="light-300">Get ready to become a professional</h3>
+            </div>
+            <div className="col-lg-2 col-12 text-light align-items-center">
+              <i className="display-1 bi-currency-exchange bi-lg"></i>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Footer />
     </div>
   );
 }

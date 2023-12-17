@@ -27,7 +27,7 @@ function CourseInfo() {
     };
   
     fetchUserResult();
-  }, [id, studentToken , tests]);
+  }, [id, studentToken, tests]);
 
   useEffect(() => {
     const fetchTests = async () => {
@@ -39,7 +39,7 @@ function CourseInfo() {
       }
     };
     fetchTests();
-  }, [id , userResult]);
+  }, [id, userResult]);
 
   useEffect(() => {
     const storedStudentInfo = localStorage.getItem("studentInfo");
@@ -48,7 +48,7 @@ function CourseInfo() {
       if (storedStudentInfo) {
         const parsedStudentInfo = JSON.parse(storedStudentInfo);
         setStudentToken(parsedStudentInfo.token);
-        setStudentInfo(parsedStudentInfo)
+        setStudentInfo(parsedStudentInfo);
       }
     } catch (error) {
       console.error("Error parsing JSON:", error);
@@ -139,7 +139,7 @@ function CourseInfo() {
               {tests.length === 0 ? (
                 <p>This course has no exams.</p>
               ) : (
-                userResult && userResult.student && studentInfo && (
+                userResult && userResult.student && studentInfo ? (
                   userResult.student.stud_email === studentInfo.stud_email ? (
                     userResult.marks_obtained > 15 ? (
                       <CourseUnits />
@@ -157,6 +157,16 @@ function CourseInfo() {
                       />
                     ))
                   )
+                ) : (
+                  tests.map((test) => (
+                    <TestBox
+                      key={test._id}
+                      testName={test.exam_name}
+                      questions={test.no_of_question}
+                      marks={test.total_marks}
+                      time={test.total_time}
+                    />
+                  ))
                 )
               )}
             </div>
